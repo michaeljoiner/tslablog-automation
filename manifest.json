@@ -1,0 +1,60 @@
+{
+  "name": "Tesla News Aggregator",
+  "short_name": "Tesla News",
+  "description": "Latest news about Tesla, SpaceX, TSLA Stock, and Department of Government Efficiency (DOGE)",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#121212",
+  "theme_color": "#121212",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Tesla News",
+      "url": "/?topic=tesla",
+      "icons": [{ "src": "/icon-tesla-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "SpaceX News",
+      "url": "/?topic=spacex",
+      "icons": [{ "src": "/icon-spacex-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "TSLA Stock News",
+      "url": "/?topic=tsla",
+      "icons": [{ "src": "/icon-tsla-96x96.png", "sizes": "96x96" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-mobile.png",
+      "sizes": "640x1136",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Tesla News on Mobile"
+    },
+    {
+      "src": "/screenshot-desktop.png",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Tesla News on Desktop"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+} 

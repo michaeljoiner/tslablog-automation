@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="TSLAblog.com Blog Post - Full Tesla, SpaceX, and Elon Musk news update.">
+  <meta name="theme-color" content="#121212">
+  
+  <!-- Preconnect to Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <title>TSLAblog.com | Blog Post</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="favicon.ico">
+  <link rel="apple-touch-icon" href="icon-192x192.png">
+  <style>
+    .blog-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: 0 4px 16px var(--shadow-color);
+      padding: 1rem 2.5rem 1.5rem 2.5rem;
+      max-width: 800px;
+      margin: 1rem auto 2rem auto;
+      border: 1px solid var(--border-color);
+      color: var(--text-color);
+      animation: fadeIn 0.7s;
+    }
+    .blog-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--accent-color);
+      line-height: 1.2;
+    }
+    .blog-date {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .blog-content {
+      font-size: 1.15rem;
+      line-height: 1.7;
+      margin: 0;
+      padding: 0;
+    }
+    
+    /* TL;DR Section Styling - Minimalist & Compact */
+    .tldr-section {
+      background: rgba(128, 128, 128, 0.1);
+      border-left: 3px solid #888888;
+      padding: 0.5rem 0.8rem;
+      margin: 0.8rem 0 0.4rem 0;
+      border-radius: 0 6px 6px 0;
+      font-size: 0.9rem;
+      box-shadow: 0 1px 4px rgba(128, 128, 128, 0.15);
+    }
+    
+    .tldr-section .tldr-title {
+      background: #666666;
+      color: white;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      display: inline-block;
+      font-size: 0.85em;
+      letter-spacing: 0.1px;
+    }
+    
+    .tldr-section ul {
+      margin: 0;
+      padding-left: 0;
+      list-style: none;
+    }
+    
+    .tldr-section li {
+      position: relative;
+      padding-left: 1.1rem;
+      margin-bottom: 0.15rem;
+      line-height: 1.4;
+      font-weight: 400;
+      color: var(--text-color);
+      font-size: 0.95em;
+    }
+    
+    .tldr-section li:before {
+      content: "•";
+      color: #888888;
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+      font-size: 1.1em;
+      top: 0;
+    }
+    
+    .tldr-section li:last-child {
+      margin-bottom: 0;
+    }
+    
+    /* Citations section styling */
+    .citations {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: rgba(0, 163, 255, 0.05);
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+    
+    .citations h3 {
+      color: var(--accent-color);
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 1.2em;
+      font-weight: 600;
+    }
+    
+    .citations ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+    
+    .citations li {
+      margin-bottom: 0.75rem;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+    
+    .citations li:before {
+      content: "🔗";
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    
+    .citations a {
+      color: var(--text-color);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    
+    .citations a:hover {
+      color: var(--accent-color);
+      text-decoration: underline;
+    }
+    
+    .back-link {
+      display: inline-block;
+      margin: 1.5rem 0 0 0.5rem;
+      color: var(--accent-color);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.1rem;
+      transition: color 0.2s;
+    }
+    .back-link:hover {
+      color: var(--tesla-color);
+      text-decoration: underline;
+    }
+    @media (max-width: 600px) {
+      .blog-card { 
+        padding: 1rem 0.5rem; 
+        margin: 1rem 0.25rem 2rem 0.25rem;
+        overflow-x: hidden;
+      }
+      .blog-title { font-size: 1.3rem; }
+      
+      /* Enhanced mobile overflow protection */
+      .blog-content {
+        overflow-x: hidden;
+        width: 100%;
+      }
+      
+      .blog-content ul,
+      .blog-content ol {
+        padding-left: 1rem;
+        margin-right: 0.5rem;
+      }
+      
+      .blog-content li a {
+        word-break: break-all;
+        overflow-wrap: anywhere;
+        line-height: 1.4;
+      }
+    }
+    .inline-citation {
+      font-size: 0.9em;
+      color: #2196f3;
+      text-decoration: none;
+      margin-left: 0.2em;
+      vertical-align: super;
+    }
+    .inline-citation:hover {
+      text-decoration: underline;
+      color: #ffb300;
+    }
+    /* Remove citations box styles */
+    /* .citations, .citations h3, .citations ul, .citations li, .citations li::before, .citations a, .citations a:hover, .citations a:focus, .light-theme .citations */
+    .blog-section {
+      margin-top: 1.5em;
+      margin-bottom: 0.5em;
+      font-size: 1.3em;
+      border-left: 4px solid #2196f3;
+      padding-left: 0.5em;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      background: linear-gradient(90deg, rgba(33,150,243,0.08) 0%, rgba(33,150,243,0.01) 100%);
+    }
+    /* Commenting out the old .what-it-means rule as it's replaced by .what-it-means-block styling
+    .what-it-means {
+      display: block;
+      background: linear-gradient(90deg, rgba(25,118,210,0.10) 0%, rgba(25,118,210,0.03) 100%);
+      color: #1565c0;
+      padding: 0.6em 1.1em 0.6em 1.1em;
+      margin: 0.6em 0 0.5em 0; 
+      border-radius: 7px;
+      font-weight: bold;
+      font-size: 1.08em;
+      border-left: 5px solid #1976d2;
+      box-shadow: 0 2px 8px #0001;
+      letter-spacing: 0.01em;
+    }
+    */
+
+    /* Style for the paragraph explaining "What it Means" - also to be removed or commented out */
+    /*
+    .what-it-means + p {
+      font-style: italic;
+    }
+    */
+
+    /* New styles for the "What it Means" block */
+    .what-it-means-block {
+      /* background-color: rgba(var(--accent-color-rgb, 0, 119, 255), 0.05); */ /* Old version with undefined var */
+      background-color: #333333; /* Darker, more distinct background for dark theme */
+      border: 1px solid var(--border-color);
+      border-left: 5px solid var(--accent-color);
+      border-radius: 8px; /* Rounded box */
+      padding: 1em 1.5em;
+      margin: 0.25em 0 1.2em 0; /* Further reduced top margin */
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Slightly more pronounced shadow */
+      color: var(--text-secondary);
+    }
+
+    /* Style for the block in light theme */
+    .light-theme .what-it-means-block {
+      background-color: #ebebeb; /* More distinct background for light theme */
+    }
+
+    .what-it-means-block strong { /* Styles the "💡 What it Means:" label */
+      display: block; 
+      font-size: 1.15em; /* Slightly larger */
+      color: var(--accent-color); 
+      font-weight: 700; /* Bolder */
+      margin-bottom: 0.6em;
+    }
+
+    .blog-card .what-it-means-block .what-it-means-text-content {
+      font-style: italic;
+      line-height: 1.7; /* Increased for italic readability */
+      color: #d0d0d0;   /* Custom lighter color for dark theme text */
+      padding: 0.5em;    /* Add some internal padding */
+      background-color: rgba(0,0,0,0.05); /* Very subtle background tint for dark mode */
+      border-radius: 4px; /* Rounded corners for this inner area */
+      margin-top: 0.3em;  /* Ensure a little space after the strong label */
+    }
+
+    /* Style for the text content in light theme */
+    .light-theme .blog-card .what-it-means-block .what-it-means-text-content {
+      color: #4a4a4a;   /* Custom darker color for light theme text */
+      background-color: rgba(255,255,255,0.3); /* Very subtle background tint for light mode */
+    }
+
+    /* Fix sources & further reading overflow */
+    .blog-content h2,
+    .blog-content h3,
+    .blog-content h4 {
+      margin-left: 0;
+      padding-left: 0;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+    
+    .blog-content ul,
+    .blog-content ol {
+      margin-left: 0;
+      padding-left: 1.5rem;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+    
+    .blog-content li {
+      margin-left: 0;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      margin-bottom: 0.5rem;
+    }
+    
+    .blog-content li a {
+      word-break: break-all;
+      overflow-wrap: anywhere;
+      display: inline-block;
+      max-width: 100%;
+    }
+    
+    .blog-content {
+      overflow-x: hidden;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+
+    .byline {
+      margin-bottom: 0.4em;
+      font-size: 1.08em;
+      color: #bdbdbd;
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      font-family: 'Google Sans', 'Roboto', Arial, sans-serif;
+    }
+    .ai-icon {
+      font-size: 1.3em;
+      margin-right: 0.2em;
+      filter: drop-shadow(0 0 2px #fff59d);
+    }
+
+    /* Styles for Google Search Chips */
+    .search-entry-point-container {
+      margin: 1.5rem 0;
+      padding: 0;
+    }
+
+    .search-chips-internal-wrapper {
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-family: 'Google Sans', 'Roboto', Arial, sans-serif;
+      font-size: 14px;
+      line-height: 20px;
+      background-color: var(--card-bg); /* Use card background */
+      border: 1px solid var(--border-color);
+      margin-bottom: 1em; /* Space below chips */
+    }
+
+    .light-theme .search-chips-internal-wrapper {
+      background-color: var(--card-bg); /* Ensure it uses light theme card bg */
+      border: 1px solid var(--border-color);
+    }
+
+    .search-chips-internal-wrapper .headline {
+      display: flex;
+      align-items: center;
+      margin-right: 12px; /* Increased spacing to avoid crowding */
+      color: var(--text-color);
+    }
+
+    .light-theme .search-chips-internal-wrapper .headline {
+      color: var(--text-color);
+    }
+    
+    /* Hide dark logo in light theme and vice-versa by default */
+    .search-chips-internal-wrapper .logo-dark {
+      display: none;
+    }
+    .light-theme .search-chips-internal-wrapper .logo-light {
+      display: none;
+    }
+    .light-theme .search-chips-internal-wrapper .logo-dark {
+      display: inline;
+    }
+    .search-chips-internal-wrapper .logo-light {
+      display: inline;
+    }
+
+    .search-chips-internal-wrapper .carousel {
+      display: flex; /* Use flex for direct children (chips) */
+      overflow-x: auto;
+      white-space: nowrap;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none;  /* IE and Edge */
+    }
+
+    .search-chips-internal-wrapper .carousel::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
+
+    .search-chips-internal-wrapper .chip {
+      display: inline-block;
+      padding: 6px 14px;
+      margin-right: 8px;
+      border-radius: 16px;
+      font-size: 0.95em; /* Slightly smaller than container font */
+      text-decoration: none;
+      border: 1px solid var(--border-color);
+      background-color: var(--body-bg); /* Slightly different from card for contrast */
+      color: var(--text-secondary);
+      transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .search-chips-internal-wrapper .chip:last-child {
+      margin-right: 0;
+    }
+
+    .search-chips-internal-wrapper .chip:hover {
+      background-color: var(--accent-color-faded);
+      color: var(--accent-color);
+      border-color: var(--accent-color);
+    }
+
+    .light-theme .search-chips-internal-wrapper .chip {
+      border: 1px solid var(--border-color-light);
+      background-color: var(--body-bg-light); /* page background */
+      color: var(--text-secondary-light);
+    }
+
+    .light-theme .search-chips-internal-wrapper .chip:hover {
+      background-color: var(--accent-color-faded-light);
+      color: var(--accent-color);
+      border-color: var(--accent-color);
+    }
+
+    /* Styles for Headers within .blog-content */
+    .blog-content h2.content-h2,
+    .blog-content h3.content-h3 {
+      color: var(--text-color); /* Theme-aware text color */
+      font-weight: 600;
+      margin-top: 2em;
+      margin-bottom: 1em;
+      line-height: 1.3;
+      padding-bottom: 0.3em;
+      border-bottom: 1px solid var(--border-color); /* Subtle separator */
+    }
+
+    .blog-content h2.content-h2 {
+      font-size: 1.25em;
+      margin-top: 1.2em;
+      margin-bottom: 0.15em;
+    }
+
+    .blog-content h3.content-h3 {
+      font-size: 1.1em;
+      margin-top: 0.7em;
+      margin-bottom: 0.15em;
+      border-bottom-style: dashed;
+    }
+
+    .blog-content p {
+      margin-top: 0;
+      margin-bottom: 0.6em;
+    }
+    
+    .blog-content p:first-of-type {
+      margin-top: 0 !important;
+    }
+
+    /* Ensure headers don't have excessive top margin if they are the first child */
+    .blog-content h2.content-h2:first-child,
+    .blog-content h3.content-h3:first-child,
+    .blog-content > h2:first-child,
+    .blog-content > h3:first-child,
+    .blog-content > p:first-child,
+    .blog-content > *:first-child {
+        margin-top: 0 !important;
+    }
+    
+    /* Improved spacing for dynamically generated content */
+    .blog-content > p {
+      margin-bottom: 0.8rem !important;
+      margin-top: 0 !important;
+    }
+    
+    .blog-content > p + p {
+      margin-top: 0.6rem !important;
+    }
+    
+    /* TL;DR section improvements */
+    .blog-content .tldr-header {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--accent-color);
+      margin: 1.5rem 0 0.8rem 0 !important;
+      border-left: 4px solid var(--accent-color);
+      padding-left: 1rem;
+      background: none;
+    }
+    
+    .blog-content .tldr-section {
+      background: rgba(0, 119, 255, 0.08);
+      border-left: 3px solid var(--accent-color);
+      padding: 1rem 1.2rem;
+      margin: 0.8rem 0 1.5rem 0 !important;
+      border-radius: 0 8px 8px 0;
+    }
+    
+    .blog-content .tldr-bullet {
+      margin: 0.5rem 0 !important;
+      padding-left: 0.5rem;
+      line-height: 1.5;
+      color: var(--text-color);
+    }
+    
+    .blog-content .tldr-bullet:first-child {
+      margin-top: 0 !important;
+    }
+    
+    .blog-content .tldr-bullet:last-child {
+      margin-bottom: 0 !important;
+    }
+    
+    /* Reduce excessive spacing from br tags */
+    .blog-content br {
+      display: block;
+      margin: 0.3rem 0;
+      content: "";
+    }
+    
+    .blog-content > h2, 
+    .blog-content > h3 {
+      margin-top: 1.5rem !important;
+      margin-bottom: 0.7rem !important;
+    }
+    
+    /* Sources section styling */
+    .blog-content .sources-header {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin: 2rem 0 0.8rem 0 !important;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.3rem;
+    }
+    
+    .blog-content .sources-list {
+      margin: 0.8rem 0 1.5rem 1rem !important;
+      padding-left: 0.5rem;
+    }
+    
+    .blog-content .sources-list li {
+      margin-bottom: 0.4rem !important;
+      line-height: 1.4;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+    
+    .blog-content .sources-list li a {
+      color: var(--accent-color);
+      text-decoration: none;
+      word-break: break-all;
+      font-size: 0.9rem;
+    }
+    
+    .blog-content .sources-list li a:hover {
+      text-decoration: underline;
+      color: var(--tesla-color);
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-content">
+        <h1>TSLAblog.com</h1>
+        <nav class="main-nav">
+          <div class="nav-links">
+            <a href="/" class="nav-link">Newsfeed</a>
+            <a href="/archive.html" class="nav-link active">Daily AI Blog</a>
+            <a href="/stock.html" class="nav-link">$TSLA Stock</a>
+          </div>
+          <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">☀️</button>
+        </nav>
+        <button class="hamburger-menu" id="hamburger-menu" aria-label="Open navigation menu">
+          <div class="hamburger-line"></div>
+          <div class="hamburger-line"></div>
+          <div class="hamburger-line"></div>
+        </button>
+      </div>
+    </header>
+    
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+    <div class="mobile-nav-menu" id="mobile-nav-menu">
+      <div class="mobile-nav-header">
+        <span class="mobile-nav-title">Navigation</span>
+        <button class="mobile-nav-close" id="mobile-nav-close">×</button>
+      </div>
+      <div class="mobile-nav-links">
+        <a href="/" class="nav-link">Newsfeed</a>
+        <a href="/archive.html" class="nav-link active">Daily AI Blog</a>
+        <a href="/stock.html" class="nav-link">$TSLA Stock</a>
+      </div>
+      <div class="mobile-nav-theme">
+        <button class="mobile-theme-toggle" id="mobile-theme-toggle">
+          <span>Theme</span>
+          <span class="mobile-theme-icon" id="mobile-theme-icon">☀️</span>
+        </button>
+      </div>
+    </div>
+    
+    <main>
+      <div id="blog-container">
+        <!-- Content will be loaded here by blog-post.js -->
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+      </div>
+      
+      <div style="text-align: center;">
+        <a href="/archive.html" class="back-link">← Back to Daily AI Blog</a>
+      </div>
+    </main>
+    
+    <footer>
+      <div style="text-align:center; margin-bottom: 10px;">
+        <img src="footercompressed.png" alt="Footer Logo" style="max-width: 100%; height: auto; display: inline-block;" />
+      </div>
+      <p>&copy; <span id="current-year">2025</span> TSLAblog.com | News refreshed every 5 minutes</p>
+    </footer>
+  </div>
+  
+  <script>
+    // Update the current year
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+    
+    // Theme toggle functionality (copied from main script)
+    function initTheme() {
+      const savedTheme = localStorage.getItem('tesla-news-settings');
+      let theme = 'dark';
+      
+      if (savedTheme) {
+        try {
+          const settings = JSON.parse(savedTheme);
+          theme = settings.theme || 'dark';
+        } catch (e) {
+          console.error('Error parsing saved theme:', e);
+        }
+      }
+      
+      // Apply theme
+      if (theme === 'light') {
+        document.body.classList.add('light-theme');
+        document.getElementById('theme-toggle').textContent = '🌙';
+      } else {
+        document.body.classList.remove('light-theme');
+        document.getElementById('theme-toggle').textContent = '☀️';
+      }
+    }
+    
+    function toggleTheme() {
+      const isLight = document.body.classList.toggle('light-theme');
+      const themeToggle = document.getElementById('theme-toggle');
+      
+      if (isLight) {
+        themeToggle.textContent = '🌙';
+      } else {
+        themeToggle.textContent = '☀️';
+      }
+      
+      // Save theme preference
+      const settings = {
+        theme: isLight ? 'light' : 'dark'
+      };
+      
+      localStorage.setItem('tesla-news-settings', JSON.stringify(settings));
+    }
+    
+    // Initialize theme on load
+    initTheme();
+    
+    // Set up theme toggle
+    document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+    
+    // Mobile navigation functionality
+    const hamburgerMenu = document.getElementById('hamburger-menu');
+    const mobileNavMenu = document.getElementById('mobile-nav-menu');
+    const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+    const mobileNavClose = document.getElementById('mobile-nav-close');
+    const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
+    const mobileThemeIcon = document.getElementById('mobile-theme-icon');
+    
+    // Function to open mobile menu
+    function openMobileMenu() {
+      hamburgerMenu.classList.add('active');
+      mobileNavMenu.classList.add('active');
+      mobileNavOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    // Function to close mobile menu
+    function closeMobileMenu() {
+      hamburgerMenu.classList.remove('active');
+      mobileNavMenu.classList.remove('active');
+      mobileNavOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    
+    // Function to update mobile theme icon
+    function updateMobileThemeIcon() {
+      const themeToggle = document.getElementById('theme-toggle');
+      if (mobileThemeIcon && themeToggle) {
+        mobileThemeIcon.textContent = themeToggle.textContent;
+      }
+    }
+    
+    // Event listeners
+    if (hamburgerMenu) {
+      hamburgerMenu.addEventListener('click', openMobileMenu);
+    }
+    
+    if (mobileNavClose) {
+      mobileNavClose.addEventListener('click', closeMobileMenu);
+    }
+    
+    if (mobileNavOverlay) {
+      mobileNavOverlay.addEventListener('click', closeMobileMenu);
+    }
+    
+    // Mobile theme toggle
+    if (mobileThemeToggle) {
+      mobileThemeToggle.addEventListener('click', toggleTheme);
+    }
+    
+    // Update mobile theme icon on theme changes
+    updateMobileThemeIcon();
+    
+    // Listen for theme changes by observing theme toggle button
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+      const observer = new MutationObserver(updateMobileThemeIcon);
+      observer.observe(themeToggle, { childList: true, subtree: true });
+    }
+    
+    // Close menu on escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && mobileNavMenu.classList.contains('active')) {
+        closeMobileMenu();
+      }
+    });
+  </script>
+  
+  <script>
+    // Inline blog post loading to avoid caching issues
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Security check
+      if (window.location.hostname !== 'tslablog.com' && 
+          window.location.hostname !== 'www.tslablog.com' && 
+          !window.location.hostname.includes('tslablogdotcom.pages.dev') &&
+          !window.location.hostname.includes('localhost')) {
+        throw new Error('Unauthorized domain');
+      }
+      
+      const API_URL = '/api/archive';
+      const blogContainer = document.getElementById('blog-container');
+
+      function formatDate(dateStr) {
+        const date = new Date(dateStr);
+        return date.toLocaleString('en-US', {
+          year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true
+        });
+      }
+
+      async function fetchBlogPost() {
+        if (!blogContainer) {
+          console.error('Required element #blog-container not found in the DOM.');
+          document.body.innerHTML = '<p style="color:red; text-align:center; margin-top: 20px;">Error: Blog display area not found. Please contact support.</p>' + document.body.innerHTML;
+          return;
+        }
+
+        const params = new URLSearchParams(window.location.search);
+        const postId = params.get('id');
+
+        if (!postId) {
+          blogContainer.innerHTML = '<p style="padding: 2rem; text-align: center;">Error: Blog post ID not specified in the URL.</p>';
+          return;
+        }
+
+        try {
+          console.log('Fetching from:', API_URL);
+          const response = await fetch(API_URL);
+          console.log('Response status:', response.status);
+          if (!response.ok) {
+            throw new Error(`Failed to fetch blog archive (HTTP ${response.status})`);
+          }
+          const posts = await response.json();
+          console.log('Posts loaded:', posts.length, 'Looking for ID:', postId);
+          const post = posts.find(p => p.id.toString() === postId);
+          console.log('Post found:', !!post);
+
+          if (!post) {
+            blogContainer.innerHTML = '<p style="padding: 2rem; text-align: center;">Error: Blog post not found.</p>';
+            return;
+          }
+
+          blogContainer.innerHTML = '';
+
+          const card = document.createElement('div');
+          card.className = 'blog-card';
+
+          const titleEl = document.createElement('h2');
+          titleEl.className = 'blog-title';
+          titleEl.textContent = post.title || 'Untitled Post';
+
+          const dateEl = document.createElement('div');
+          dateEl.className = 'blog-date';
+          dateEl.textContent = post.created_at ? formatDate(post.created_at) : 'Date not available';
+          
+          const bylineEl = document.createElement('div');
+          bylineEl.className = 'byline';
+          bylineEl.innerHTML = '<span class="ai-icon">✨</span> Written by Aimee Joiner, AI Intern at TSLAblog.com';
+
+          const contentEl = document.createElement('div');
+          contentEl.className = 'blog-content';
+          
+          if (post.content) {
+            const lines = post.content.split('\n');
+            let inTLDR = false;
+            let inSources = false;
+            
+            for (let i = 0; i < lines.length; i++) {
+              const line = lines[i];
+              
+              if (line.trim() === '') {
+                // Skip adding too many breaks - CSS will handle spacing
+                continue;
+              }
+              
+              // Check for TL;DR section
+              if (line.trim() === 'TL;DR') {
+                inTLDR = true;
+                const tldrHeader = document.createElement('h3');
+                tldrHeader.className = 'tldr-header';
+                tldrHeader.textContent = 'TL;DR';
+                contentEl.appendChild(tldrHeader);
+                
+                const tldrContainer = document.createElement('div');
+                tldrContainer.className = 'tldr-section';
+                
+                // Process TL;DR bullet points
+                i++; // Skip the TL;DR line
+                while (i < lines.length && (lines[i].startsWith('•') || lines[i].trim() === '')) {
+                  if (lines[i].trim() !== '') {
+                    const bulletPoint = document.createElement('div');
+                    bulletPoint.className = 'tldr-bullet';
+                    bulletPoint.innerHTML = lines[i].replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                    tldrContainer.appendChild(bulletPoint);
+                  }
+                  i++;
+                }
+                i--; // Back up one since the loop will increment
+                
+                contentEl.appendChild(tldrContainer);
+                inTLDR = false;
+                continue;
+              }
+              
+              // Check for Sources section
+              if (line.trim().toLowerCase().startsWith('sources:') || line.trim().toLowerCase().startsWith('further reading:')) {
+                inSources = true;
+                const sourcesHeader = document.createElement('h3');
+                sourcesHeader.className = 'sources-header';
+                sourcesHeader.textContent = line.trim();
+                contentEl.appendChild(sourcesHeader);
+                
+                const sourcesList = document.createElement('ul');
+                sourcesList.className = 'sources-list';
+                
+                // Process source links
+                i++; // Skip the Sources line
+                while (i < lines.length && lines[i].trim() !== '') {
+                  const sourceLine = lines[i].trim();
+                  if (sourceLine) {
+                    const listItem = document.createElement('li');
+                    // Convert URLs to clickable links
+                    const linkRegex = /(https?:\/\/[^\s]+)/g;
+                    listItem.innerHTML = sourceLine.replace(linkRegex, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
+                    sourcesList.appendChild(listItem);
+                  }
+                  i++;
+                }
+                i--; // Back up one since the loop will increment
+                
+                contentEl.appendChild(sourcesList);
+                inSources = false;
+                continue;
+              }
+              
+              // Regular content processing
+              if (line.startsWith('###')) {
+                const h3 = document.createElement('h3');
+                h3.textContent = line.replace(/^###\s*/, '');
+                contentEl.appendChild(h3);
+              } else if (line.startsWith('##')) {
+                const h2 = document.createElement('h2');
+                h2.textContent = line.replace(/^##\s*/, '');
+                contentEl.appendChild(h2);
+              } else if (!inTLDR && !inSources) {
+                const p = document.createElement('p');
+                // Convert URLs to clickable links and bold text
+                let processedLine = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                const linkRegex = /(https?:\/\/[^\s]+)/g;
+                processedLine = processedLine.replace(linkRegex, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
+                p.innerHTML = processedLine;
+                contentEl.appendChild(p);
+              }
+            }
+          } else {
+            contentEl.innerHTML = '<p>No content available for this post.</p>';
+          }
+
+          card.appendChild(titleEl);
+          card.appendChild(dateEl);
+          card.appendChild(bylineEl);
+          card.appendChild(contentEl);
+          blogContainer.appendChild(card);
+
+        } catch (error) {
+          console.error('Error fetching blog post:', error);
+          blogContainer.innerHTML = '<p style="padding: 2rem; text-align: center; color: red;">Error loading blog post. Please try again later.</p>';
+        }
+      }
+
+      await fetchBlogPost();
+    });
+  </script>
+</body>
+</html> 

@@ -1,0 +1,24 @@
+name = "tesla-newsfeed"
+main = "tesla-newsfeed-worker.js"
+compatibility_date = "2024-05-01"
+
+routes = [
+  "tslablog.com/newsfeed",
+  "www.tslablog.com/newsfeed",
+  "tslablog.com/admin/refresh-news", 
+  "www.tslablog.com/admin/refresh-news",
+  "tslablog.com/errors",
+  "www.tslablog.com/errors"
+]
+
+[[kv_namespaces]]
+binding = "NEWS_CACHE"
+id = "48dedaa31d3f41ea8f8514081bc155f9"
+
+[[d1_databases]]
+binding = "NEWS_BLOG_D1"
+database_name = "tslablog_news"
+database_id = "5604bbf0-c2e2-4af6-9067-80e8dbf852d7"
+
+[triggers]
+crons = ["*/30 * * * *"]

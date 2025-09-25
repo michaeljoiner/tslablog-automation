@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-71K5E5ZBFZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-71K5E5ZBFZ');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Latest Tesla and TSLA stock news, curated and updated regularly. Tesla vehicle updates, earnings, production, and market analysis.">
+  <meta name="theme-color" content="#121212">
+  
+  <!-- Security Headers - Configure in Cloudflare Pages -->
+  <!-- 
+    Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://s3.tradingview.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://tslablog-worker.*.workers.dev https://tslablog-gemini-blog.*.workers.dev;
+    X-Frame-Options: DENY
+    X-Content-Type-Options: nosniff
+    Referrer-Policy: strict-origin-when-cross-origin
+  -->
+  
+  <!-- SEO Meta Tags -->
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow">
+  <meta name="bingbot" content="index, follow">
+  <meta name="keywords" content="Tesla, TSLA, Stock, Elon Musk, News, Cybertruck, Model 3, Model Y, Gigafactory, Investing">
+  <meta name="author" content="Tesla News Aggregator">
+  <meta name="canonical" href="https://tslablog.com">
+  
+  <!-- Open Graph / Social Media -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tslablog.com">
+  <meta property="og:title" content="Tesla | $TSLA News & Analysis">
+  <meta property="og:description" content="Latest Tesla and TSLA stock news, curated and updated regularly. Tesla vehicle updates, earnings, production, and market analysis.">
+  <meta property="og:image" content="https://tslablog.com/icon-512x512.png">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://tslablog.com">
+  <meta name="twitter:title" content="Tesla | $TSLA News & Analysis">
+  <meta name="twitter:description" content="Latest Tesla and TSLA stock news, curated and updated regularly. Tesla vehicle updates, earnings, production, and market analysis.">
+  <meta name="twitter:image" content="https://tslablog.com/icon-512x512.png">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚗</text></svg>">
+  
+  <!-- Preconnect to Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <title>Tesla | $TSLA News & Analysis</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="favicon.ico">
+  <link rel="apple-touch-icon" href="icon-192x192.png">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-content">
+        <h1>TSLAblog.com</h1>
+        <nav class="main-nav">
+          <div class="nav-links">
+            <a href="/" class="nav-link active">Newsfeed</a>
+            <a href="/archive.html" class="nav-link">Daily AI Blog</a>
+            <a href="/stock.html" class="nav-link">$TSLA Stock</a>
+          </div>
+          <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">☀️</button>
+        </nav>
+        <button class="hamburger-menu" id="hamburger-menu" aria-label="Open navigation menu">
+          <div class="hamburger-line"></div>
+          <div class="hamburger-line"></div>
+          <div class="hamburger-line"></div>
+        </button>
+      </div>
+    </header>
+    
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+    <div class="mobile-nav-menu" id="mobile-nav-menu">
+      <div class="mobile-nav-header">
+        <span class="mobile-nav-title">Navigation</span>
+        <button class="mobile-nav-close" id="mobile-nav-close">×</button>
+      </div>
+      <div class="mobile-nav-links">
+        <a href="/" class="nav-link active">Newsfeed</a>
+        <a href="/archive.html" class="nav-link">Daily AI Blog</a>
+        <a href="/stock.html" class="nav-link">$TSLA Stock</a>
+      </div>
+      <div class="mobile-nav-theme">
+        <button class="mobile-theme-toggle" id="mobile-theme-toggle">
+          <span>Theme</span>
+          <span class="mobile-theme-icon" id="mobile-theme-icon">☀️</span>
+        </button>
+      </div>
+    </div>
+    
+    <main>
+      <div class="controls">
+        <div class="last-updated-container">
+          <span class="last-updated" id="last-updated"></span>
+        </div>
+      </div>
+      
+      
+      <div id="status" class="status"></div>
+      <div id="news-container">
+        <!-- Loading skeletons -->
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+      </div>
+    </main>
+    
+    <footer>
+      <div style="text-align:center; margin-bottom: 10px;">
+        <img src="footercompressed.png" alt="Footer Logo" style="max-width: 100%; height: auto; display: inline-block;" />
+      </div>
+      <p>&copy; <span id="current-year">2025</span> TSLAblog.com | Tesla & TSLA news refreshed every 5 minutes</p>
+    </footer>
+  </div>
+  
+  <script>
+    // Update the current year
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+  </script>
+  
+  <!-- Structured Data for SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "TSLAblog.com - Tesla News Aggregator",
+    "url": "https://tslablog.com",
+    "description": "Latest Tesla and TSLA stock news, curated and updated regularly.",
+    "potentialAction": {
+      "@type": "ReadAction",
+      "target": "https://tslablog.com"
+    }
+  }
+  </script>
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "TSLAblog.com - Tesla News Aggregator",
+    "url": "https://tslablog.com",
+    "logo": "https://tslablog.com/icon-512x512.png",
+    "sameAs": [
+      "https://www.tesla.com"
+    ]
+  }
+  </script>
+  
+  <!-- ADD MASONRY LIBRARY SCRIPT HERE -->
+  <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js?v=4.2.2"></script>
+  
+  <!-- ADD IMAGESLOADED LIBRARY SCRIPT HERE -->
+  <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js?v=5.0.0"></script>
+  
+  <script src="script.js?v=3"></script>
+  
+  <!-- Mobile Navigation JavaScript -->
+  <script>
+    // Mobile navigation functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const hamburgerMenu = document.getElementById('hamburger-menu');
+      const mobileNavMenu = document.getElementById('mobile-nav-menu');
+      const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+      const mobileNavClose = document.getElementById('mobile-nav-close');
+      const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
+      const mobileThemeIcon = document.getElementById('mobile-theme-icon');
+      
+      // Function to open mobile menu
+      function openMobileMenu() {
+        hamburgerMenu.classList.add('active');
+        mobileNavMenu.classList.add('active');
+        mobileNavOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+      
+      // Function to close mobile menu
+      function closeMobileMenu() {
+        hamburgerMenu.classList.remove('active');
+        mobileNavMenu.classList.remove('active');
+        mobileNavOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+      
+      // Event listeners
+      if (hamburgerMenu) {
+        hamburgerMenu.addEventListener('click', openMobileMenu);
+      }
+      
+      if (mobileNavClose) {
+        mobileNavClose.addEventListener('click', closeMobileMenu);
+      }
+      
+      if (mobileNavOverlay) {
+        mobileNavOverlay.addEventListener('click', closeMobileMenu);
+      }
+      
+      // Mobile theme toggle
+      if (mobileThemeToggle) {
+        mobileThemeToggle.addEventListener('click', function() {
+          const themeToggle = document.getElementById('theme-toggle');
+          if (themeToggle) {
+            themeToggle.click(); // Trigger existing theme toggle
+          }
+        });
+      }
+      
+      // Update mobile theme icon when theme changes
+      function updateMobileThemeIcon() {
+        const themeToggle = document.getElementById('theme-toggle');
+        if (mobileThemeIcon && themeToggle) {
+          mobileThemeIcon.textContent = themeToggle.textContent;
+        }
+      }
+      
+      // Initial mobile theme icon update
+      updateMobileThemeIcon();
+      
+      // Listen for theme changes
+      const themeToggle = document.getElementById('theme-toggle');
+      if (themeToggle) {
+        const observer = new MutationObserver(updateMobileThemeIcon);
+        observer.observe(themeToggle, { childList: true, subtree: true });
+      }
+      
+      // Close menu on escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && mobileNavMenu.classList.contains('active')) {
+          closeMobileMenu();
+        }
+      });
+    });
+  </script>
+  
+  <script>
+    // User-visible error if Masonry or imagesLoaded fail to load
+    window.addEventListener('DOMContentLoaded', function() {
+      setTimeout(function() {
+        if (typeof Masonry === 'undefined' || typeof imagesLoaded === 'undefined') {
+          var status = document.getElementById('status');
+          if (status) {
+            status.innerHTML = '<span style="color:#ff5252;font-weight:bold;">⚠️ Layout failed to load. Please hard refresh (Shift+Reload) to fix.</span>';
+            status.classList.add('error');
+          }
+          console.error('Masonry or imagesLoaded library failed to load.');
+        }
+      }, 1000); // Wait 1s for scripts to load
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Tesla (TSLA) Stock Analysis - Real-time charts, technical analysis, and market data">
+  <meta name="theme-color" content="#121212">
+  <title>Tesla Stock Analysis | TSLAblog.com</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="favicon.ico">
+  <link rel="apple-touch-icon" href="icon-192x192.png">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    .stock-page {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding: 2rem;
+      background: linear-gradient(135deg, var(--accent-color), var(--tesla-color));
+      border-radius: 12px;
+      color: white;
+    }
+
+    .page-title {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .page-subtitle {
+      font-size: clamp(1rem, 3vw, 1.3rem);
+      opacity: 0.9;
+    }
+
+    .widget-section {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text-color);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 2px solid var(--accent-color);
+      padding-bottom: 0.5rem;
+    }
+
+    .main-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    @media (min-width: 1024px) {
+      .main-layout {
+        grid-template-columns: 2fr 1fr;
+      }
+    }
+
+    .financial-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    @media (min-width: 1024px) {
+      .financial-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    /* Widget Heights */
+    .chart-height { height: 500px; }
+    .overview-height { height: 350px; }
+    .technical-height { height: 400px; }
+    .profile-height { height: 350px; }
+    .fundamental-height { height: 400px; }
+    .news-height { height: 500px; }
+    .calendar-height { height: 400px; }
+
+    @media (max-width: 768px) {
+      /* Hide advanced chart on mobile - too cramped */
+      .stock-page > .widget-section:first-of-type {
+        display: none;
+      }
+      
+      .chart-height { height: 400px; }
+      .overview-height { height: 300px; }
+      .technical-height, 
+      .profile-height, 
+      .fundamental-height { height: 350px; }
+      .news-height { height: 400px; }
+      .calendar-height { height: 350px; }
+    }
+
+    /* TradingView Widget Styles */
+    .tradingview-widget-container {
+      height: 100%;
+      width: 100%;
+    }
+
+    .tradingview-widget-container__widget {
+      height: 100% !important;
+      width: 100% !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-content">
+        <h1>TSLAblog.com</h1>
+        <nav class="main-nav">
+          <div class="nav-links">
+            <a href="/" class="nav-link">Newsfeed</a>
+            <a href="/archive.html" class="nav-link">Daily AI Blog</a>
+            <a href="/stock.html" class="nav-link active">$TSLA Stock</a>
+          </div>
+          <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">☀️</button>
+        </nav>
+        <button class="hamburger-menu" id="hamburger-menu" aria-label="Open navigation menu">
+          <div class="hamburger-line"></div>
+          <div class="hamburger-line"></div>
+          <div class="hamburger-line"></div>
+        </button>
+      </div>
+    </header>
+    
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+    <div class="mobile-nav-menu" id="mobile-nav-menu">
+      <div class="mobile-nav-header">
+        <span class="mobile-nav-title">Navigation</span>
+        <button class="mobile-nav-close" id="mobile-nav-close">×</button>
+      </div>
+      <div class="mobile-nav-links">
+        <a href="/" class="nav-link">Newsfeed</a>
+        <a href="/archive.html" class="nav-link">Daily AI Blog</a>
+        <a href="/stock.html" class="nav-link active">$TSLA Stock</a>
+      </div>
+      <div class="mobile-nav-theme">
+        <button class="mobile-theme-toggle" id="mobile-theme-toggle">
+          <span>Theme</span>
+          <span class="mobile-theme-icon" id="mobile-theme-icon">☀️</span>
+        </button>
+      </div>
+    </div>
+    
+    <main class="stock-page">
+      <!-- Advanced Chart - Full Width -->
+      <div class="widget-section">
+        <div class="section-title">📈 TSLA Advanced Chart</div>
+        <div class="chart-height">
+          <!-- TradingView Widget BEGIN -->
+          <div class="tradingview-widget-container" style="height:100%;width:100%">
+            <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+            <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
+            <script type="text/javascript">
+            (function() {
+              const getCurrentTheme = () => {
+                const savedTheme = localStorage.getItem('tesla-news-settings');
+                if (savedTheme) {
+                  try {
+                    const settings = JSON.parse(savedTheme);
+                    return settings.theme || 'dark';
+                  } catch (e) {
+                    return 'dark';
+                  }
+                }
+                return 'dark';
+              };
+              
+              const script = document.createElement('script');
+              script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+              script.async = true;
+              script.innerHTML = JSON.stringify({
+                "autosize": true,
+                "symbol": "NASDAQ:TSLA",
+                "interval": "D",
+                "timezone": "Etc/UTC",
+                "theme": getCurrentTheme(),
+                "style": "1",
+                "locale": "en",
+                "enable_publishing": false,
+                "withdateranges": true,
+                "range": "YTD",
+                "hide_side_toolbar": false,
+                "allow_symbol_change": false,
+                "details": true,
+                "hotlist": true,
+                "calendar": false,
+                "studies": [
+                  "STD;SMA"
+                ],
+                "container_id": "tradingview_chart"
+              });
+              document.currentScript.parentNode.appendChild(script);
+            })();
+            </script>
+          </div>
+          <!-- TradingView Widget END -->
+        </div>
+      </div>
+
+      <!-- Main Layout -->
+      <div class="main-layout">
+        <!-- Main Content -->
+        <div class="main-content">
+          <!-- Technical Analysis -->
+          <div class="widget-section">
+            <div class="section-title">🎯 Technical Analysis</div>
+            <div class="technical-height">
+              <!-- TradingView Widget BEGIN -->
+              <div class="tradingview-widget-container" style="height:100%;width:100%">
+                <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+                <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
+                <script type="text/javascript">
+                (function() {
+                  const getCurrentTheme = () => {
+                    const savedTheme = localStorage.getItem('tesla-news-settings');
+                    if (savedTheme) {
+                      try {
+                        const settings = JSON.parse(savedTheme);
+                        return settings.theme || 'dark';
+                      } catch (e) {
+                        return 'dark';
+                      }
+                    }
+                    return 'dark';
+                  };
+                  
+                  const script = document.createElement('script');
+                  script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js';
+                  script.async = true;
+                  script.innerHTML = JSON.stringify({
+                    "interval": "1m",
+                    "width": "100%",
+                    "isTransparent": false,
+                    "height": "400",
+                    "symbol": "NASDAQ:TSLA",
+                    "showIntervalTabs": true,
+                    "displayMode": "single",
+                    "locale": "en",
+                    "colorTheme": getCurrentTheme()
+                  });
+                  document.currentScript.parentNode.appendChild(script);
+                })();
+                </script>
+              </div>
+              <!-- TradingView Widget END -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+          <!-- Mini Overview -->
+          <div class="widget-section">
+            <div class="section-title">📊 TSLA Overview</div>
+            <div class="overview-height">
+              <!-- TradingView Widget BEGIN -->
+              <div class="tradingview-widget-container" style="height:100%;width:100%">
+                <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+                <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
+                <script type="text/javascript">
+                (function() {
+                  const getCurrentTheme = () => {
+                    const savedTheme = localStorage.getItem('tesla-news-settings');
+                    if (savedTheme) {
+                      try {
+                        const settings = JSON.parse(savedTheme);
+                        return settings.theme || 'dark';
+                      } catch (e) {
+                        return 'dark';
+                      }
+                    }
+                    return 'dark';
+                  };
+                  
+                  const script = document.createElement('script');
+                  script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js';
+                  script.async = true;
+                  script.innerHTML = JSON.stringify({
+                    "symbol": "NASDAQ:TSLA",
+                    "width": "100%",
+                    "height": "350",
+                    "locale": "en",
+                    "dateRange": "12M",
+                    "colorTheme": getCurrentTheme(),
+                    "autosize": true,
+                    "largeChartUrl": ""
+                  });
+                  document.currentScript.parentNode.appendChild(script);
+                })();
+                </script>
+              </div>
+              <!-- TradingView Widget END -->
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
+      <!-- Financial Data Row -->
+      <div class="financial-grid">
+        <!-- Fundamental Data -->
+        <div class="widget-section">
+          <div class="section-title">💼 Fundamental Data</div>
+          <div class="fundamental-height">
+            <!-- TradingView Widget BEGIN -->
+            <div class="tradingview-widget-container" style="height:100%;width:100%">
+              <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+              <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
+              <script type="text/javascript">
+              (function() {
+                const getCurrentTheme = () => {
+                  const savedTheme = localStorage.getItem('tesla-news-settings');
+                  if (savedTheme) {
+                    try {
+                      const settings = JSON.parse(savedTheme);
+                      return settings.theme || 'dark';
+                    } catch (e) {
+                      return 'dark';
+                    }
+                  }
+                  return 'dark';
+                };
+                
+                const script = document.createElement('script');
+                script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-financials.js';
+                script.async = true;
+                script.innerHTML = JSON.stringify({
+                  "colorTheme": getCurrentTheme(),
+                  "isTransparent": false,
+                  "largeChartUrl": "",
+                  "displayMode": "regular",
+                  "width": "100%",
+                  "height": "400",
+                  "symbol": "NASDAQ:TSLA",
+                  "locale": "en"
+                });
+                document.currentScript.parentNode.appendChild(script);
+              })();
+              </script>
+            </div>
+            <!-- TradingView Widget END -->
+          </div>
+        </div>
+
+        <!-- Company Profile (moved from sidebar) -->
+        <div class="widget-section">
+          <div class="section-title">🏢 Company Profile</div>
+          <div class="profile-height">
+            <!-- TradingView Widget BEGIN -->
+            <div class="tradingview-widget-container" style="height:100%;width:100%">
+              <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+              <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
+              <script type="text/javascript">
+              (function() {
+                const getCurrentTheme = () => {
+                  const savedTheme = localStorage.getItem('tesla-news-settings');
+                  if (savedTheme) {
+                    try {
+                      const settings = JSON.parse(savedTheme);
+                      return settings.theme || 'dark';
+                    } catch (e) {
+                      return 'dark';
+                    }
+                  }
+                  return 'dark';
+                };
+                
+                const script = document.createElement('script');
+                script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-symbol-profile.js';
+                script.async = true;
+                script.innerHTML = JSON.stringify({
+                  "width": "100%",
+                  "height": "350",
+                  "colorTheme": getCurrentTheme(),
+                  "isTransparent": false,
+                  "symbol": "NASDAQ:TSLA",
+                  "locale": "en"
+                });
+                document.currentScript.parentNode.appendChild(script);
+              })();
+              </script>
+            </div>
+            <!-- TradingView Widget END -->
+          </div>
+        </div>
+      </div>
+
+      <!-- News Section -->
+      <div class="widget-section">
+        <div class="section-title">📰 Tesla News & Market Updates</div>
+        <div class="news-height">
+          <!-- TradingView Widget BEGIN -->
+          <div class="tradingview-widget-container" style="height:100%;width:100%">
+            <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+            <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
+            <script type="text/javascript">
+            (function() {
+              const getCurrentTheme = () => {
+                const savedTheme = localStorage.getItem('tesla-news-settings');
+                if (savedTheme) {
+                  try {
+                    const settings = JSON.parse(savedTheme);
+                    return settings.theme || 'dark';
+                  } catch (e) {
+                    return 'dark';
+                  }
+                }
+                return 'dark';
+              };
+              
+              const script = document.createElement('script');
+              script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-timeline.js';
+              script.async = true;
+              script.innerHTML = JSON.stringify({
+                "feedMode": "symbol",
+                "symbol": "NASDAQ:TSLA",
+                "colorTheme": getCurrentTheme(),
+                "isTransparent": false,
+                "displayMode": "regular",
+                "width": "100%",
+                "height": "500",
+                "locale": "en"
+              });
+              document.currentScript.parentNode.appendChild(script);
+            })();
+            </script>
+          </div>
+          <!-- TradingView Widget END -->
+        </div>
+      </div>
+    </main>
+    
+    <footer>
+      <div style="text-align:center; margin-bottom: 10px;">
+        <img src="footercompressed.png" alt="Footer Logo" style="max-width: 100%; height: auto; display: inline-block;" />
+      </div>
+      <p>&copy; <span id="current-year">2025</span> TSLAblog.com | Tesla stock data provided by TradingView</p>
+    </footer>
+  </div>
+  
+  <script>
+    // Update the current year
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+    
+    // Theme management
+    function getCurrentTheme() {
+      const savedTheme = localStorage.getItem('tesla-news-settings');
+      if (savedTheme) {
+        try {
+          const settings = JSON.parse(savedTheme);
+          return settings.theme || 'dark';
+        } catch (e) {
+          console.error('Error parsing saved theme:', e);
+        }
+      }
+      return 'dark';
+    }
+    
+    function initTheme() {
+      const theme = getCurrentTheme();
+      
+      if (theme === 'light') {
+        document.body.classList.add('light-theme');
+        document.getElementById('theme-toggle').textContent = '🌙';
+      } else {
+        document.body.classList.remove('light-theme');
+        document.getElementById('theme-toggle').textContent = '☀️';
+      }
+    }
+    
+    function toggleTheme() {
+      const isLight = document.body.classList.toggle('light-theme');
+      const themeToggle = document.getElementById('theme-toggle');
+      
+      if (isLight) {
+        themeToggle.textContent = '🌙';
+      } else {
+        themeToggle.textContent = '☀️';
+      }
+      
+      // Save theme preference
+      const settings = {
+        theme: isLight ? 'light' : 'dark'
+      };
+      
+      localStorage.setItem('tesla-news-settings', JSON.stringify(settings));
+      
+      // Reload page to update widgets with new theme
+      window.location.reload();
+    }
+    
+    // Initialize everything when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      initTheme();
+      
+      // Set up theme toggle
+      document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+      
+      // Mobile navigation functionality
+      const hamburgerMenu = document.getElementById('hamburger-menu');
+      const mobileNavMenu = document.getElementById('mobile-nav-menu');
+      const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+      const mobileNavClose = document.getElementById('mobile-nav-close');
+      const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
+      const mobileThemeIcon = document.getElementById('mobile-theme-icon');
+      
+      // Function to open mobile menu
+      function openMobileMenu() {
+        hamburgerMenu.classList.add('active');
+        mobileNavMenu.classList.add('active');
+        mobileNavOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+      
+      // Function to close mobile menu
+      function closeMobileMenu() {
+        hamburgerMenu.classList.remove('active');
+        mobileNavMenu.classList.remove('active');
+        mobileNavOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+      
+      // Event listeners
+      if (hamburgerMenu) {
+        hamburgerMenu.addEventListener('click', openMobileMenu);
+      }
+      
+      if (mobileNavClose) {
+        mobileNavClose.addEventListener('click', closeMobileMenu);
+      }
+      
+      if (mobileNavOverlay) {
+        mobileNavOverlay.addEventListener('click', closeMobileMenu);
+      }
+      
+      // Mobile theme toggle
+      if (mobileThemeToggle) {
+        mobileThemeToggle.addEventListener('click', function() {
+          toggleTheme();
+        });
+      }
+      
+      // Update mobile theme icon when theme changes
+      function updateMobileThemeIcon() {
+        const themeToggle = document.getElementById('theme-toggle');
+        if (mobileThemeIcon && themeToggle) {
+          mobileThemeIcon.textContent = themeToggle.textContent;
+        }
+      }
+      
+      // Initial mobile theme icon update
+      updateMobileThemeIcon();
+      
+      // Listen for theme changes by observing theme toggle button
+      const themeToggle = document.getElementById('theme-toggle');
+      if (themeToggle) {
+        const observer = new MutationObserver(updateMobileThemeIcon);
+        observer.observe(themeToggle, { childList: true, subtree: true });
+      }
+      
+      // Close menu on escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && mobileNavMenu.classList.contains('active')) {
+          closeMobileMenu();
+        }
+      });
+    });
+  </script>
+</body>
+</html> 

@@ -1,0 +1,27 @@
+name: Generate Tesla Blog
+
+on:
+  schedule:
+    # Run daily at 7:00 AM PT (which is 2:00 PM UTC in winter, 3:00 PM UTC in summer)
+    # Using 3:00 PM UTC to be safe for daylight saving time
+    - cron: '0 15 * * *'
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  generate-blog:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Generate Tesla Blog Post
+      run: |
+        curl -X POST \
+          -H "x-gen-auth: ${{ secrets.GENERATE_SECRET }}" \
+          -H "Content-Type: application/json" \
+          -w "HTTP Status: %{http_code}\n" \
+          -s \
+          https://tslablog.com/generate
+
+    - name: Verify Blog Generation
+      run: |
+        echo "Blog generation request completed"
+        echo "Check https://tslablog.com/archive for the latest post"

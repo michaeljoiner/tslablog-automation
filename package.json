@@ -1,0 +1,21 @@
+{
+  "name": "tslablog-gemini-blog",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "generate-blog": "./trigger-blog.sh",
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "tail": "wrangler tail --format=pretty"
+  },
+  "dependencies": {
+    "@google/genai": "^1.0.0",
+    "mime": "^4.0.1",
+    "fast-xml-parser": "^5.2.5",
+    "node-fetch": "^3.3.2",
+    "xml2js": "^0.6.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0"
+  }
+}

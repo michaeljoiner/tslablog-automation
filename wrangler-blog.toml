@@ -1,0 +1,25 @@
+name = "tesla-blog"
+main = "tesla-blog-worker.js" 
+compatibility_date = "2024-05-01"
+
+routes = [
+  "tslablog.com/sitemap.xml",
+  "www.tslablog.com/sitemap.xml",
+  "tslablog.com/api/archive",
+  "www.tslablog.com/api/archive", 
+  "tslablog.com/latest",
+  "www.tslablog.com/latest",
+  "tslablog.com/generate",
+  "www.tslablog.com/generate"
+]
+
+[[kv_namespaces]]
+binding = "NEWS_BLOG_KV"
+id = "78275beda46646f2b0673d48a039e505"
+
+[[d1_databases]]
+binding = "NEWS_BLOG_D1"
+database_name = "tslablog_news"
+database_id = "5604bbf0-c2e2-4af6-9067-80e8dbf852d7"
+
+# Removed cron triggers - using GitHub Actions instead

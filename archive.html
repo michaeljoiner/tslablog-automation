@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="TSLAblog.com Blog Archive - All past Tesla, SpaceX, and Elon Musk news updates.">
+  <meta name="theme-color" content="#121212">
+  
+  <!-- Preconnect to Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <title>Daily AI Blog Archive | TSLAblog.com</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="favicon.ico">
+  <link rel="apple-touch-icon" href="icon-192x192.png">
+  
+  <style>
+    /* Enhanced Archive Page Styling */
+    
+    /* Ensure light theme variables are available in this scope */
+    body {
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Light theme overrides */
+    body.light-theme {
+      --bg-color: #f5f5f5 !important;
+      --card-bg: #ffffff !important;
+      --text-color: #333333 !important;
+      --text-secondary: #666666 !important;
+      --border-color: #cccccc !important;
+      --accent-color: #0077ff !important;
+      --tesla-color: #00a3ff !important;
+      --shadow-color: rgba(0, 0, 0, 0.15) !important;
+      
+      /* Apply the variables directly */
+      background-color: #f5f5f5 !important;
+      color: #333333 !important;
+    }
+    
+    /* Ensure cards update in light theme */
+    body.light-theme .blog-archive-card {
+      background: #ffffff !important;
+      border-color: #cccccc !important;
+      color: #333333 !important;
+    }
+    
+    body.light-theme .blog-archive-title {
+      color: #0077ff !important;
+    }
+    
+    body.light-theme .blog-archive-date {
+      color: #666666 !important;
+    }
+    
+    body.light-theme .blog-archive-snippet {
+      color: #333333 !important;
+    }
+    
+    .blog-archive-card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      margin: 2rem auto;
+      max-width: 800px;
+      padding: 2rem 2.5rem;
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: 0 2px 8px var(--shadow-color);
+      border: 1px solid var(--border-color);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .blog-archive-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent-color), var(--tesla-color));
+      transform: scaleX(0);
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .blog-archive-card:hover::before {
+      transform: scaleX(1);
+    }
+    
+    .blog-archive-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px var(--shadow-color);
+      border-color: var(--border-color);
+    }
+    
+    .blog-archive-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--accent-color);
+      line-height: 1.3;
+      transition: color 0.2s ease;
+    }
+    
+    .blog-archive-card:hover .blog-archive-title {
+      color: var(--tesla-color);
+    }
+    
+    .blog-archive-date {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+    
+    .blog-archive-snippet {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: var(--text-color);
+      margin-bottom: 1.5rem;
+    }
+    
+    .read-more-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      background: linear-gradient(90deg, var(--accent-color), var(--tesla-color));
+      color: #fff;
+      text-decoration: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      transition: all 0.2s ease;
+    }
+    
+    .read-more-btn:hover {
+      background: linear-gradient(90deg, var(--tesla-color), var(--accent-color));
+      box-shadow: 0 3px 12px rgba(0,0,0,0.2);
+    }
+    
+    @media (max-width: 768px) {
+      .blog-archive-card {
+        margin: 1.5rem 1rem;
+        padding: 1.5rem;
+      }
+      
+      .blog-archive-card:hover {
+        transform: translateY(-1px);
+      }
+      
+      .blog-archive-title {
+        font-size: 1.5rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .blog-archive-card {
+        padding: 1rem;
+      }
+      
+      .blog-archive-title {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-content">
+        <h1>TSLAblog.com</h1>
+        <nav class="main-nav">
+          <div class="nav-links">
+            <a href="/" class="nav-link">Newsfeed</a>
+            <a href="/archive.html" class="nav-link active">Daily AI Blog</a>
+            <a href="/stock.html" class="nav-link">$TSLA Stock</a>
+          </div>
+          <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">☀️</button>
+        </nav>
+        <button class="hamburger-menu" id="hamburger-menu" aria-label="Open navigation menu">
+          <div class="hamburger-line"></div>
+          <div class="hamburger-line"></div>
+          <div class="hamburger-line"></div>
+        </button>
+      </div>
+    </header>
+    
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+    <div class="mobile-nav-menu" id="mobile-nav-menu">
+      <div class="mobile-nav-header">
+        <span class="mobile-nav-title">Navigation</span>
+        <button class="mobile-nav-close" id="mobile-nav-close">×</button>
+      </div>
+      <div class="mobile-nav-links">
+        <a href="/" class="nav-link">Newsfeed</a>
+        <a href="/archive.html" class="nav-link active">Daily AI Blog</a>
+        <a href="/stock.html" class="nav-link">$TSLA Stock</a>
+      </div>
+      <div class="mobile-nav-theme">
+        <button class="mobile-theme-toggle" id="mobile-theme-toggle">
+          <span>Theme</span>
+          <span class="mobile-theme-icon" id="mobile-theme-icon">☀️</span>
+        </button>
+      </div>
+    </div>
+    
+    <main>
+      <div id="status" class="status"></div>
+      <div id="blog-archive-list">
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+      </div>
+    </main>
+    
+    <footer>
+      <div style="text-align:center; margin-bottom: 10px;">
+        <img src="footercompressed.png" alt="Footer Logo" style="max-width: 100%; height: auto; display: inline-block;" />
+      </div>
+      <p>&copy; <span id="current-year">2025</span> TSLAblog.com | News refreshed every 5 minutes</p>
+    </footer>
+  </div>
+  
+  <script>
+    // Update the current year
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+  </script>
+  
+  <script src="blog-archive.js?v=2.0&t=1722054870"></script>
+  
+  <!-- Mobile Navigation JavaScript -->
+  <script>
+    // Mobile navigation functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const hamburgerMenu = document.getElementById('hamburger-menu');
+      const mobileNavMenu = document.getElementById('mobile-nav-menu');
+      const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+      const mobileNavClose = document.getElementById('mobile-nav-close');
+      const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
+      const mobileThemeIcon = document.getElementById('mobile-theme-icon');
+      const themeToggle = document.getElementById('theme-toggle');
+      
+      // Function to open mobile menu
+      function openMobileMenu() {
+        hamburgerMenu.classList.add('active');
+        mobileNavMenu.classList.add('active');
+        mobileNavOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+      
+      // Function to close mobile menu
+      function closeMobileMenu() {
+        hamburgerMenu.classList.remove('active');
+        mobileNavMenu.classList.remove('active');
+        mobileNavOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+      
+      // Function to toggle theme
+      function toggleTheme() {
+        const isLight = document.body.classList.toggle('light-theme');
+        
+        if (themeToggle) {
+          themeToggle.textContent = isLight ? '🌙' : '☀️';
+        }
+        
+        // Save theme preference
+        const settings = {
+          theme: isLight ? 'light' : 'dark'
+        };
+        
+        localStorage.setItem('tesla-news-settings', JSON.stringify(settings));
+        updateMobileThemeIcon();
+      }
+      
+      // Function to update mobile theme icon
+      function updateMobileThemeIcon() {
+        if (mobileThemeIcon && themeToggle) {
+          mobileThemeIcon.textContent = themeToggle.textContent;
+        }
+      }
+      
+      // Initialize theme
+      function initTheme() {
+        const savedTheme = localStorage.getItem('tesla-news-settings');
+        if (savedTheme) {
+          try {
+            const settings = JSON.parse(savedTheme);
+            if (settings.theme === 'light') {
+              document.body.classList.add('light-theme');
+              if (themeToggle) {
+                themeToggle.textContent = '🌙';
+              }
+            } else {
+              document.body.classList.remove('light-theme');
+              if (themeToggle) {
+                themeToggle.textContent = '☀️';
+              }
+            }
+          } catch (e) {
+            console.error('Error parsing saved theme:', e);
+          }
+        }
+        updateMobileThemeIcon();
+      }
+      
+      // Event listeners
+      if (hamburgerMenu) {
+        hamburgerMenu.addEventListener('click', openMobileMenu);
+      }
+      
+      if (mobileNavClose) {
+        mobileNavClose.addEventListener('click', closeMobileMenu);
+      }
+      
+      if (mobileNavOverlay) {
+        mobileNavOverlay.addEventListener('click', closeMobileMenu);
+      }
+      
+      // Mobile theme toggle
+      if (mobileThemeToggle) {
+        mobileThemeToggle.addEventListener('click', toggleTheme);
+      }
+      
+      // Desktop theme toggle
+      if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+      }
+      
+      // Close menu on escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && mobileNavMenu.classList.contains('active')) {
+          closeMobileMenu();
+        }
+      });
+      
+      // Initialize theme
+      initTheme();
+    });
+  </script>
+</body>
+</html> 
