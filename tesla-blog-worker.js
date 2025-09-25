@@ -226,15 +226,18 @@ async function generateGeminiBlog(env) {
     
     const enhancedPrompt = `Generate a blog post in JSON format with a headline, TL;DR (3 bullet points up to 1 sentence each), and the blog post content. The blog post should be an update on Tesla, TSLA stock, and Elon Musk.
 
+**CRITICAL: Return ONLY the JSON object. Do NOT wrap it in markdown code blocks or any other formatting.**
+
 **REQUIREMENTS:**
 - Very intellectual, facts-based news update as long as needed to convey information in a detailed, fair, unbiased way
 - Inject absolutely zero speculation or opinion
 - Use news from articles published today only (${pacificTime})
+- When mentioning TSLA stock price, use the most current/latest price mentioned in today's articles
 - Don't refer to this prompt and don't include the date in the headline
 - If you change subjects, make it a new paragraph
 - Headlines shouldn't be generic and should be catchy and click-inducing but not clickbait, following AP style
 
-**JSON FORMAT:**
+**JSON FORMAT (return exactly this structure with NO markdown formatting):**
 {
   "headline": "Your headline here",
   "tldr": [
@@ -249,6 +252,7 @@ async function generateGeminiBlog(env) {
 - Focus on net-new facts from today's news only
 - Voice = smart, intellectual, fact-based
 - Use specific numbers, dates and facts when available
+- For TSLA stock price, use the latest/most recent price from today's articles
 - Present tense for recent events
 - No speculation, opinion, or fluff
 
@@ -272,42 +276,39 @@ URL: ${article.url}
     // Parse JSON response from Gemini
     let parsedBlog;
     try {
-      // Extract JSON from response if it's wrapped in code blocks
       let jsonText = blogResponse.text.trim();
-      const jsonMatch = jsonText.match(/```json\s*(\{[\s\S]*\})\s*```/);
-      if (jsonMatch) {
-        jsonText = jsonMatch[1];
+
+      // Remove any markdown code block wrapper if present
+      const codeBlockMatch = jsonText.match(/```(?:json)?\s*(\{[\s\S]*?\})\s*```/i);
+      if (codeBlockMatch) {
+        jsonText = codeBlockMatch[1].trim();
       } else if (jsonText.startsWith('```') && jsonText.endsWith('```')) {
+        // Handle plain code blocks
         jsonText = jsonText.slice(3, -3).trim();
-        if (jsonText.startsWith('json')) {
+        if (jsonText.toLowerCase().startsWith('json')) {
           jsonText = jsonText.slice(4).trim();
         }
       }
 
+      // Try to find JSON object if response has extra text
+      const jsonMatch = jsonText.match(/(\{[\s\S]*\})/);
+      if (jsonMatch) {
+        jsonText = jsonMatch[1];
+      }
+
       parsedBlog = JSON.parse(jsonText);
+
+      // Validate required fields
+      if (!parsedBlog.headline || !parsedBlog.tldr || !parsedBlog.content) {
+        throw new Error("Missing required fields in JSON response");
+      }
+
     } catch (error) {
       console.error("Failed to parse JSON blog response:", error);
       console.log("Raw response:", blogResponse.text);
 
-      // Fallback to plain text parsing
-      let title = "TSLAblog News Update";
-      let content = blogResponse.text;
-
-      const lines = content.split(/\r?\n/).filter((line) => line.trim() !== "");
-      if (lines.length > 0) {
-        const firstLine = lines[0].replace(/^# ?/, "").trim();
-        if (firstLine.length > 0 && !firstLine.startsWith("TL;DR")) {
-          title = firstLine.replace(/\*\*/g, "").replace(/\*/g, "").trim();
-          const titlePattern = new RegExp(`^#?\\s*${firstLine.replace(/[.*+?^${}()[\]\\]/g, "\\$&")}\\s*\\n?`, "i");
-          content = content.replace(titlePattern, "").trim();
-        }
-      }
-
-      parsedBlog = {
-        headline: title,
-        tldr: ["Blog post generated", "Contains Tesla news", "Check content for details"],
-        content: content
-      };
+      // If JSON parsing fails, return null to skip this blog generation
+      return null;
     }
 
     // Format the content with TL;DR
