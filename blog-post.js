@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     throw new Error('Unauthorized domain');
   }
   
-  // API configuration - use API endpoint for individual blog posts
-  const API_URL = '/api/archive';
+  // API configuration - use individual blog post endpoint for full content
+  const INDIVIDUAL_BLOG_API_URL = '/api/blog/';
   const blogContainer = document.getElementById('blog-container');
 
   function formatDate(dateStr) {
@@ -37,18 +37,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      console.log('Fetching from:', API_URL);
-      const response = await fetch(API_URL);
+      const apiUrl = INDIVIDUAL_BLOG_API_URL + postId;
+      console.log('Fetching from:', apiUrl);
+      const response = await fetch(apiUrl);
       console.log('Response status:', response.status);
-      if (!response.ok) {
-        throw new Error(`Failed to fetch blog archive (HTTP ${response.status})`);
-      }
-      const posts = await response.json();
-      console.log('Posts loaded:', posts.length, 'Looking for ID:', postId);
-      const post = posts.find(p => p.id.toString() === postId);
-      console.log('Post found:', !!post);
 
-      if (!post) {
+      if (!response.ok) {
+        if (response.status === 404) {
+          blogContainer.innerHTML = '<p style="padding: 2rem; text-align: center;">Error: Blog post not found.</p>';
+          return;
+        }
+        throw new Error(`Failed to fetch blog post (HTTP ${response.status})`);
+      }
+
+      const post = await response.json();
+      console.log('Post loaded:', post.title);
+
+      if (!post || post.error) {
         blogContainer.innerHTML = '<p style="padding: 2rem; text-align: center;">Error: Blog post not found.</p>';
         return;
       }

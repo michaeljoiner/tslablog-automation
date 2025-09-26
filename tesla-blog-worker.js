@@ -116,6 +116,88 @@ export default {
         }
       }
 
+      // Individual blog post endpoint - returns full content
+      if (url.pathname.startsWith("/api/blog/")) {
+        const blogId = url.pathname.split("/api/blog/")[1];
+
+        if (!blogId) {
+          return new Response(JSON.stringify({ error: "Blog ID required" }), {
+            status: 400,
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*"
+            }
+          });
+        }
+
+        try {
+          // Check cache first for individual blog post
+          const cacheKey = `blog_post_${blogId}`;
+          const cached = await env.NEWS_BLOG_KV.get(cacheKey, { type: "json" });
+
+          if (cached && cached.timestamp && (Date.now() - cached.timestamp) < 600000) {
+            return new Response(JSON.stringify(cached.data), {
+              headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+                "Cache-Control": "public, max-age=600"
+              }
+            });
+          }
+
+          await env.NEWS_BLOG_D1.prepare("CREATE TABLE IF NOT EXISTS blog_posts (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, content TEXT, created_at TEXT, grounding TEXT);").run();
+
+          // Fetch full content for individual blog post
+          const { results } = await env.NEWS_BLOG_D1.prepare("SELECT id, title, content, created_at, grounding FROM blog_posts WHERE id = ? LIMIT 1").bind(blogId).all();
+
+          if (!results || results.length === 0) {
+            return new Response(JSON.stringify({ error: "Blog post not found" }), {
+              status: 404,
+              headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+              }
+            });
+          }
+
+          const post = results[0];
+
+          // Parse grounding JSON
+          if (post.grounding) {
+            try {
+              post.grounding = JSON.parse(post.grounding);
+            } catch (e) {
+              console.error("Failed to parse grounding JSON:", e);
+              post.grounding = {};
+            }
+          }
+
+          // Cache the full blog post for 10 minutes
+          await env.NEWS_BLOG_KV.put(cacheKey, JSON.stringify({
+            data: post,
+            timestamp: Date.now()
+          }), { expirationTtl: 1200 }); // 20 minute expiration
+
+          return new Response(JSON.stringify(post), {
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
+              "Cache-Control": "public, max-age=600"
+            }
+          });
+
+        } catch (error) {
+          console.error("Individual blog endpoint error:", error);
+          return new Response(JSON.stringify({ error: "Failed to fetch blog post" }), {
+            status: 500,
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*"
+            }
+          });
+        }
+      }
+
       // Manual blog generation endpoint
       if (url.pathname === "/generate" || url.pathname === "/generate/") {
         try {
