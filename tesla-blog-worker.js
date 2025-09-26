@@ -72,22 +72,46 @@ export default {
       // Blog archive endpoint
       if (url.pathname === "/api/archive") {
         try {
+          // Check cache first (cache for 5 minutes)
+          const cacheKey = "blog_archive_cache";
+          const cached = await env.NEWS_BLOG_KV.get(cacheKey, { type: "json" });
+
+          if (cached && cached.timestamp && (Date.now() - cached.timestamp) < 300000) {
+            return new Response(JSON.stringify(cached.data), {
+              headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+                "Cache-Control": "public, max-age=300"
+              }
+            });
+          }
+
+          // Only create table if not exists (should already exist)
           await env.NEWS_BLOG_D1.prepare("CREATE TABLE IF NOT EXISTS blog_posts (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, content TEXT, created_at TEXT, grounding TEXT);").run();
-          const { results } = await env.NEWS_BLOG_D1.prepare("SELECT id, title, content, created_at, grounding FROM blog_posts ORDER BY created_at DESC LIMIT 100").all();
-          
-          return new Response(JSON.stringify(results || []), { 
-            headers: { 
-              "Content-Type": "application/json", 
-              "Access-Control-Allow-Origin": "*" 
-            } 
+
+          // Fetch only necessary fields for archive listing (no full content)
+          const { results } = await env.NEWS_BLOG_D1.prepare("SELECT id, title, SUBSTR(content, 1, 300) as content, created_at FROM blog_posts ORDER BY created_at DESC LIMIT 50").all();
+
+          // Cache the results
+          await env.NEWS_BLOG_KV.put(cacheKey, JSON.stringify({
+            data: results || [],
+            timestamp: Date.now()
+          }), { expirationTtl: 600 }); // 10 minute expiration
+
+          return new Response(JSON.stringify(results || []), {
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
+              "Cache-Control": "public, max-age=300"
+            }
           });
         } catch (error) {
           console.error("Archive endpoint error:", error);
-          return new Response(JSON.stringify([]), { 
-            headers: { 
-              "Content-Type": "application/json", 
-              "Access-Control-Allow-Origin": "*" 
-            } 
+          return new Response(JSON.stringify([]), {
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*"
+            }
           });
         }
       }
@@ -108,6 +132,9 @@ export default {
           await env.NEWS_BLOG_D1.prepare(
             "INSERT INTO blog_posts (title, content, created_at, grounding) VALUES (?, ?, ?, ?)"
           ).bind(blog.title, blog.content, new Date().toISOString(), JSON.stringify(blog.grounding || {})).run();
+
+          // Clear archive cache when new blog is added
+          await env.NEWS_BLOG_KV.delete("blog_archive_cache");
           
           return new Response(JSON.stringify(blog), { 
             headers: { 
@@ -176,6 +203,9 @@ export default {
         await env.NEWS_BLOG_D1.prepare(
           "INSERT INTO blog_posts (title, content, created_at, grounding) VALUES (?, ?, ?, ?)"
         ).bind(blog.title, blog.content, new Date().toISOString(), JSON.stringify(blog.grounding || {})).run();
+
+        // Clear archive cache when new blog is added
+        await env.NEWS_BLOG_KV.delete("blog_archive_cache");
         console.log("Scheduled blog generated successfully");
       } else {
         const error = new Error("Blog generation returned null/undefined result");
