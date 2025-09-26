@@ -93,6 +93,26 @@ header {
   position: relative;
   border-bottom: 1px solid var(--border-color);
   margin-bottom: 0.1rem !important;
+  background-color: var(--bg-color);
+}
+
+/* Sticky header on mobile */
+@media (max-width: 768px) {
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 900; /* Lower than mobile nav menu so menu appears on top */
+    background-color: var(--bg-color);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    /* Add subtle shadow when sticky */
+    box-shadow: 0 2px 8px var(--shadow-color);
+  }
+
+  main {
+    /* Add small top margin to create visual separation when scrolling */
+    margin-top: 0.5rem;
+  }
 }
 
 .header-content {
